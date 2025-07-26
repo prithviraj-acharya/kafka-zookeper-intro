@@ -6,7 +6,7 @@ Go into docker - docker exec -it kafka1 bash
 create topic --
 kafka-topics \
   --create \
-  --topic my-topic \
+  --topic orders \
   --partitions 3 \
   --replication-factor 1 \
   --bootstrap-server localhost:9092
