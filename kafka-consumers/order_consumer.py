@@ -14,7 +14,7 @@ group_id = sys.argv[1] if len(sys.argv) > 1 else "order-processor"
 
 consumer = KafkaConsumer(
     'orders',
-    bootstrap_servers='kafka1:19092',
+    bootstrap_servers='localhost:9092',
     group_id=group_id,
     value_deserializer=lambda m: json.loads(m.decode('utf-8')),
     auto_offset_reset='earliest',
@@ -24,7 +24,8 @@ consumer = KafkaConsumer(
 def on_assign(consumer, partitions):
     print(f"Assigned partitions: {[p.partition for p in partitions]}")
 
-consumer.subscribe(['orders'], on_assign=on_assign)
+consumer.subscribe(['orders'])
+consumer.on_partitions_assigned = on_assign
 
 print(f"Consumer started in group: {group_id} (auto_offset_reset=earliest)")
 for msg in consumer:
